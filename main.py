@@ -5,6 +5,9 @@ import os
 import cv2
 import util
 
+target_width = 100
+target_height = 100
+
 
 def resize(frame, width, height):
     fx = float(height) / frame.shape[0]
@@ -23,7 +26,7 @@ def clip_img():
             width = img.shape[1]
             trained_path = "aed/train/pos-" + str(pos_count) + ".pgm"
             image_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            cv2.imwrite(trained_path, resize(image_gray, 300, 300))
+            cv2.imwrite(trained_path, resize(image_gray, target_width, target_height))
             pos_count += 1
     path = "aed/negative"
     neg_count = 0
@@ -33,7 +36,7 @@ def clip_img():
             img = cv2.imread(file_path)
             trained_path = "aed/train/neg-" + str(neg_count) + ".pgm"
             image_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            cv2.imwrite(trained_path, resize(image_gray, 300, 300))
+            cv2.imwrite(trained_path, resize(image_gray, target_width, target_height))
 
             neg_count += 1
 
@@ -71,9 +74,9 @@ def create_info():
     util.write_to_file('aed_neg.info', neg_str)
 
 
-# create vec file: opencv_createsamples -info car_pos.info -num 550 -w 100 -h 40 -vec cars_pos.vec
-# check vec file: opencv_createsamples -w 100 -h 40 -vec cars_pos.vec
-# train cascade: opencv_traincascade -data data -vec cars_pos.vec -bg car_neg.info -numPos 550 -numNeg 500 -numStages 2 -w 100 -h 40 -featureType LBP
+# create vec file: opencv_createsamples -info car_pos.info -num 550 -w 100 -h 100 -vec cars_pos.vec
+# check vec file: opencv_createsamples -w 100 -h 100 -vec cars_pos.vec
+# train cascade: opencv_traincascade -data data -vec cars_pos.vec -bg car_neg.info -numPos 550 -numNeg 500 -numStages 2 -w 100 -h 100 -featureType LBP
 
 clip_img()
 create_info()
