@@ -22,7 +22,8 @@ def clip_img():
             height = img.shape[0]
             width = img.shape[1]
             trained_path = "aed/train/pos-" + str(pos_count) + ".pgm"
-            cv2.imwrite(trained_path, resize(img, 300, 300))
+            image_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            cv2.imwrite(trained_path, resize(image_gray, 300, 300))
             pos_count += 1
     path = "aed/negative"
     neg_count = 0
@@ -31,7 +32,8 @@ def clip_img():
         if '.jpg' in r or '.png' in r or '.jpeg' in r:
             img = cv2.imread(file_path)
             trained_path = "aed/train/neg-" + str(neg_count) + ".pgm"
-            cv2.imwrite(trained_path, resize(img, 300, 300))
+            image_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            cv2.imwrite(trained_path, resize(image_gray, 300, 300))
 
             neg_count += 1
 
