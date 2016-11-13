@@ -21,7 +21,7 @@ def clip_img():
             img = cv2.imread(file_path)
             height = img.shape[0]
             width = img.shape[1]
-            trained_path = "aed/train/pos-" + str(pos_count) + ".jpg"
+            trained_path = "aed/train/pos-" + str(pos_count) + ".pgm"
             cv2.imwrite(trained_path, resize(img, 300, 300))
             pos_count += 1
     path = "aed/negative"
@@ -30,7 +30,7 @@ def clip_img():
         file_path = join(path, r)
         if '.jpg' in r or '.png' in r or '.jpeg' in r:
             img = cv2.imread(file_path)
-            trained_path = "aed/train/neg-" + str(neg_count) + ".jpg"
+            trained_path = "aed/train/neg-" + str(neg_count) + ".pgm"
             cv2.imwrite(trained_path, resize(img, 300, 300))
 
             neg_count += 1
@@ -47,7 +47,7 @@ def create_info():
     neg_count = 0
     for r in listdir(path):
         file_path = join(path, r)
-        if r.index('.jpg') != -1:
+        if '.pgm' in r:
             img = cv2.imread(file_path)
             height = img.shape[0]
             width = img.shape[1]
