@@ -31,7 +31,7 @@ def clip_img():
         if '.jpg' in r or '.png' in r or '.jpeg' in r:
             img = cv2.imread(file_path)
             trained_path = "aed/train/neg-" + str(neg_count) + ".jpg"
-            cv2.imwrite(trained_path, img)
+            cv2.imwrite(trained_path, resize(img, 300, 300))
 
             neg_count += 1
 
