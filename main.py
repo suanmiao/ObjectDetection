@@ -6,15 +6,48 @@ import cv2
 import util
 
 
+def resize(frame, width, height):
+    fx = float(height) / frame.shape[0]
+    fy = float(width) / frame.shape[1]
+    return cv2.resize(frame, (0, 0), fx=fy, fy=fx)
+
+
+def clip_img():
+    path = "aed/positive"
+    pos_count = 0
+    for r in listdir(path):
+        file_path = join(path, r)
+        if '.jpg' in r or '.png' in r or '.jpeg' in r:
+            img = cv2.imread(file_path)
+            height = img.shape[0]
+            width = img.shape[1]
+            trained_path = "aed/train/pos-" + str(pos_count) + ".jpg"
+            cv2.imwrite(trained_path, resize(img, 300, 300))
+            pos_count += 1
+    path = "aed/negative"
+    neg_count = 0
+    for r in listdir(path):
+        file_path = join(path, r)
+        if '.jpg' in r or '.png' in r or '.jpeg' in r:
+            img = cv2.imread(file_path)
+            trained_path = "aed/train/neg-" + str(neg_count) + ".jpg"
+            cv2.imwrite(trained_path, img)
+
+            neg_count += 1
+
+    print pos_count
+    print neg_count
+
+
 def create_info():
-    path = "train"
+    path = "aed/train"
     pos_str = ''
     neg_str = ''
     pos_count = 0
     neg_count = 0
     for r in listdir(path):
         file_path = join(path, r)
-        if r.index('.pgm') != -1:
+        if r.index('.jpg') != -1:
             img = cv2.imread(file_path)
             height = img.shape[0]
             width = img.shape[1]
@@ -32,12 +65,13 @@ def create_info():
     neg_str = neg_str[:-1]
     print pos_count
     print neg_count
-    util.write_to_file('car_pos.info', pos_str)
-    util.write_to_file('car_neg.info', neg_str)
+    util.write_to_file('aed_pos.info', pos_str)
+    util.write_to_file('aed_neg.info', neg_str)
 
 
 # create vec file: opencv_createsamples -info car_pos.info -num 550 -w 100 -h 40 -vec cars_pos.vec
 # check vec file: opencv_createsamples -w 100 -h 40 -vec cars_pos.vec
 # train cascade: opencv_traincascade -data data -vec cars_pos.vec -bg car_neg.info -numPos 550 -numNeg 500 -numStages 2 -w 100 -h 40 -featureType LBP
 
+clip_img()
 create_info()
