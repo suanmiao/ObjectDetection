@@ -5,8 +5,8 @@ import os
 import cv2
 import util
 
-target_width = 100
-target_height = 100
+target_width = 50
+target_height = 50
 
 
 def resize(frame, width, height):
